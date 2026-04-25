@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La mulți ani, Alina! 🧡</title>
+<meta property="og:title" content="La mulți ani, Alina!">
+<meta property="og:description" content="v Alina.0 — Now Live in Production ❤️">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    background: #f4f4f7;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1a1a1f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 16/10;
+    background: #fafafa;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #e8e8ec;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    background: #fafafa;
+    pointer-events: none;
+  }
+  .scene.active { opacity: 1; z-index: 2; pointer-events: auto; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececf0;
+    margin-bottom: 16px;
+    font-size: 11px;
+    color: #888;
+  }
+  .brand {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #1a1a1f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #ff8a3d, #ff5a1f);
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border: 1px solid #e8e8ec;
+    background: #fff;
+    color: #555;
+    border-radius: 999px;
+    font-size: 11px;
+  }
+  .chip.accent {
+    border-color: #ffd6bd;
+    background: #fff5ef;
+    color: #d94a0e;
+  }
+  .dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    margin-right: 5px;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+  .mono { font-family: ui-monospace, "SF Mono", Monaco, Consolas, monospace; }
+
+  /* SCENE 1: Kanban */
+  .kanban {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    flex: 1;
+    overflow: hidden;
+  }
+  .col {
+    background: #fff;
+    border: 1px solid #ececf0;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .col-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #ececf0;
+    font-weight: 500;
+  }
+  .col-head .count {
+    background: #f4f4f7;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-family: monospace;
+    color: #666;
+    font-weight: 400;
+  }
+  .ticket {
+    background: #fff;
+    border: 1px solid #ececf0;
+    border-left: 3px solid #999;
+    border-radius: 6px;
+    padding: 7px 9px;
+    margin-bottom: 6px;
+    font-size: 11px;
+    opacity: 0;
+    transform: translateY(-6px);
+    animation: tin 0.35s forwards;
+    color: #333;
+  }
+  .ticket.p0 { border-left-color: #ef4444; }
+  .ticket.p1 { border-left-color: #f59e0b; }
+  .ticket.p2 { border-left-color: #0ea5e9; }
+  .ticket.done {
+    opacity: 0.55;
+    text-decoration: line-through;
+    text-decoration-color: #22c55e;
+    background: #fafafa;
+  }
+  @keyframes tin { to { opacity: 1; transform: none; } }
+  .ticket .id {
+    font-family: monospace;
+    color: #999;
+    font-size: 9px;
+    margin-right: 5px;
+  }
+  .ticket .badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 9px;
+    margin-top: 4px;
+    background: #f4f4f7;
+    color: #777;
+  }
+  .ticket.assigned-alina { border-left-color: #ff5a1f; }
+  .ticket.assigned-alina .badge {
+    background: #fff5ef;
+    color: #d94a0e;
+    font-weight: 500;
+  }
+
+  /* SCENE 2: Phone */
+  .phone-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+  }
+  .phone {
+    width: 180px;
+    aspect-ratio: 9/19;
+    background: #1a1a1f;
+    border-radius: 24px;
+    padding: 8px;
+    box-shadow: 0 0 0 2px #2a2a30, 0 20px 50px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #ff8a3d, #ff5a1f);
+    border-radius: 18px;
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 14px;
+    background: #1a1a1f;
+    border-radius: 0 0 10px 10px;
+    z-index: 5;
+  }
+  .phone-time {
+    font-size: 10px;
+    color: #fff;
+    text-align: left;
+    font-weight: 600;
+    padding: 0 8px;
+  }
+  .phone-logo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .phone-logo .icon {
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ff5a1f;
+    margin-bottom: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+  .phone-logo .name { font-size: 14px; font-weight: 600; color: #fff; }
+  .phone-logo .ver {
+    font-size: 10px;
+    color: #fff;
+    opacity: 0.85;
+    margin-top: 3px;
+    font-family: monospace;
+  }
+  .release-info {
+    flex: 1;
+    min-width: 200px;
+    max-width: 260px;
+  }
+  .release-info h3 {
+    font-size: 14px;
+    margin: 0 0 4px;
+    color: #1a1a1f;
+    font-weight: 600;
+  }
+  .release-info .sub {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 12px;
+    font-family: monospace;
+  }
+  .changelog {
+    background: #fff;
+    border: 1px solid #ececf0;
+    border-radius: 8px;
+    padding: 11px;
+    font-size: 11px;
+    line-height: 1.8;
+    font-family: monospace;
+  }
+  .changelog .added { color: #15803d; }
+  .changelog .fixed { color: #a16207; }
+  .changelog .removed { color: #b91c1c; }
+
+  .push {
+    position: absolute;
+    top: 30px;
+    left: 8px;
+    right: 8px;
+    background: rgba(255,255,255,0.97);
+    color: #1a1a1f;
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: pushin 0.6s 1s forwards;
+  }
+  @keyframes pushin { to { opacity: 1; transform: none; } }
+  .push .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+  .push .app {
+    font-weight: 600;
+    color: #ff5a1f;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .push .time { font-size: 9px; color: #999; }
+  .push .body { color: #1a1a1f; line-height: 1.4; }
+
+  /* SCENE 3: KPI */
+  .okr-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .kpi-card {
+    background: #fff;
+    border: 1px solid #ececf0;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #ff8a3d, #ff5a1f);
+  }
+  .kpi-label {
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+  .kpi-val {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1f;
+    font-family: monospace;
+    margin: 6px 0;
+  }
+  .kpi-trend {
+    font-size: 11px;
+    color: #15803d;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .kpi-trend.quote {
+    color: #666;
+    font-style: italic;
+  }
+  .mini-bar {
+    height: 4px;
+    background: #f4f4f7;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .mini-bar > span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, #ff8a3d, #ff5a1f);
+    width: 0%;
+    transition: width 1.4s ease;
+  }
+
+  /* SCENE 4: Reviews */
+  .store-head { text-align: center; margin-bottom: 14px; }
+  .store-head .stars {
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: #f59e0b;
+    line-height: 1;
+  }
+  .store-head .rating {
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 4px;
+    color: #1a1a1f;
+  }
+  .store-head .count {
+    font-size: 11px;
+    color: #888;
+  }
+  .reviews {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+  }
+  .review {
+    background: #fff;
+    border: 1px solid #ececf0;
+    border-radius: 8px;
+    padding: 9px 11px;
+    font-size: 11px;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: rin 0.6s forwards;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  @keyframes rin { to { opacity: 1; transform: none; } }
+  .review .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+  .review .author { font-weight: 600; color: #1a1a1f; font-size: 11px; }
+  .review .stars { color: #f59e0b; font-size: 10px; letter-spacing: 1px; }
+  .review .lang-flag { font-size: 10px; margin-left: 5px; }
+  .review .text { color: #555; line-height: 1.5; font-style: italic; }
+
+  /* SCENE 5: Final */
+  .final {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+  }
+  .release-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #ffd6bd;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-family: monospace;
+    color: #d94a0e;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(255,90,31,0.1);
+  }
+  .release-tag .live-dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+  .final .emoji-row {
+    font-size: 48px;
+    margin: 8px 0;
+    letter-spacing: 6px;
+  }
+  .final h1 {
+    font-size: 40px;
+    margin: 0;
+    font-weight: 700;
+    color: #1a1a1f;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+  .final h1 .accent {
+    background: linear-gradient(90deg, #ff8a3d, #ff5a1f);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .final .role {
+    font-size: 13px;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .final .signed {
+    margin-top: 16px;
+    padding: 12px 22px;
+    background: #fff;
+    border: 1px solid #ececf0;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #d94a0e;
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .final .signed .from {
+    font-size: 10px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  canvas.confetti {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .controls {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 10;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .step {
+    color: #888;
+    font-size: 10px;
+    font-family: monospace;
+    background: #fff;
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid #ececf0;
+  }
+
+  .quote-bubble {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ececf0;
+    border-left: 3px solid #ff5a1f;
+    padding: 9px 13px;
+    border-radius: 10px;
+    font-size: 11px;
+    max-width: 210px;
+    opacity: 0;
+    transform: translateY(8px);
+    z-index: 8;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    animation: bin 0.5s forwards, bout 0.5s 4.5s forwards;
+    pointer-events: none;
+    color: #333;
+  }
+  @keyframes bin { to { opacity: 1; transform: none; } }
+  @keyframes bout { to { opacity: 0; transform: translateY(-6px); } }
+  .quote-bubble .who {
+    display: block;
+    color: #d94a0e;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+    font-weight: 600;
+  }
+
+  .btn {
+    background: linear-gradient(180deg, #ff8a3d, #ff5a1f);
+    color: #fff;
+    border: 0;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    margin: 0 3px;
+    box-shadow: 0 2px 6px rgba(255,90,31,0.25);
+    transition: all 0.15s;
+  }
+  .btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+  .btn.ghost {
+    background: #fff;
+    border: 1px solid #e8e8ec;
+    color: #1a1a1f;
+    box-shadow: none;
+  }
+
+  @media (max-width: 600px) {
+    #app { aspect-ratio: 9/14; }
+    .final h1 { font-size: 26px; }
+    .okr-grid { grid-template-columns: 1fr; }
+    .phone-wrap { flex-direction: column; gap: 16px; }
+    .phone { width: 130px; }
+    .release-info { max-width: 100%; }
+    .scene { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="scene active" id="s1">
+    <div class="topbar">
+      <span class="brand"><span class="logo">O</span> MY ORANGE · sprint board</span>
+      <span class="chip"><span class="dot"></span>sprint #∞ · grooming</span>
+    </div>
+    <div class="kanban">
+      <div class="col">
+        <div class="col-head"><span>📥 Backlog</span><span class="count" id="c-back">5</span></div>
+        <div id="col-back">
+          <div class="ticket p2"><span class="id">MYO-1247</span>Add dark mode toggle<div class="badge">Frontend</div></div>
+          <div class="ticket p1"><span class="id">MYO-1248</span>Refactor onboarding flow<div class="badge">UX</div></div>
+          <div class="ticket p2"><span class="id">MYO-1249</span>API rate limit improvements<div class="badge">Backend</div></div>
+          <div class="ticket p1"><span class="id">MYO-1250</span>Localization: add Hungarian<div class="badge">i18n</div></div>
+          <div class="ticket p2"><span class="id">MYO-1251</span>Tweak push notification copy<div class="badge">Content</div></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-head"><span>🔄 In Progress</span><span class="count" id="c-prog">2</span></div>
+        <div id="col-prog">
+          <div class="ticket p1 assigned-alina" style="animation-delay:.4s"><span class="id">MYO-1252</span>Q4 roadmap review<div class="badge">@ Alina</div></div>
+          <div class="ticket p0 assigned-alina" style="animation-delay:.9s"><span class="id">MYO-9999</span>🎂 Birthday Celebration · P0 Critical<div class="badge">@ Alina</div></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="col-head"><span>✅ Done</span><span class="count" id="c-done">847</span></div>
+        <div id="col-done">
+          <div class="ticket done" style="animation-delay:.1s"><span class="id">MYO-1245</span>Payment flow polish</div>
+          <div class="ticket done" style="animation-delay:.2s"><span class="id">MYO-1244</span>Account settings redesign</div>
+          <div class="ticket done" style="animation-delay:.3s"><span class="id">MYO-1243</span>Bug: edge case on logout</div>
+          <div class="ticket done" style="animation-delay:.4s"><span class="id">MYO-1242</span>Push opt-in screen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="s2">
+    <div class="topbar">
+      <span class="brand"><span class="logo">O</span> MY ORANGE · release</span>
+      <span class="chip accent"><span class="dot"></span>shipping to store</span>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-time">9:41</div>
+          <div class="push">
+            <div class="head">
+              <span class="app">◆ My Orange</span>
+              <span class="time">acum</span>
+            </div>
+            <div class="body">Neatsa 🚀 Aplicația e publicată în store ❤️</div>
+          </div>
+          <div class="phone-logo">
+            <div class="icon">O</div>
+            <div class="name">My Orange</div>
+            <div class="ver">v Alina.0</div>
+          </div>
+        </div>
+      </div>
+      <div class="release-info">
+        <h3>Release Notes</h3>
+        <div class="sub">v Alina.0 · Birthday Edition</div>
+        <div class="changelog">
+          <div class="added">+ Added: Birthday cake 🎂</div>
+          <div class="added">+ Added: Confetti animation</div>
+          <div class="fixed">~ Fixed: Monday mood</div>
+          <div class="fixed">~ Fixed: Sprint anxiety</div>
+          <div class="removed">− Removed: All blockers</div>
+          <div class="removed">− Removed: Bad vibes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="s3">
+    <div class="topbar">
+      <span class="brand"><span class="logo">O</span> MY ORANGE · Q4 metrics</span>
+      <span class="chip"><span class="dot"></span>all KRs on track</span>
+    </div>
+    <div class="okr-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">User stories scrise</div>
+        <div class="kpi-val" data-target="9999">0</div>
+        <div class="kpi-trend">▲ +200% vs last sprint</div>
+        <div class="mini-bar"><span data-w="100"></span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Standups salvate</div>
+        <div class="kpi-val" data-target="1247">0</div>
+        <div class="kpi-trend quote">"deci, hai să sumarizăm"</div>
+        <div class="mini-bar"><span data-w="95"></span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Stakeholders calmați</div>
+        <div class="kpi-val" style="font-size:38px">∞</div>
+        <div class="kpi-trend quote">"acus verific" — said & done</div>
+        <div class="mini-bar"><span data-w="100"></span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Edge cases prinse</div>
+        <div class="kpi-val" data-target="100">0<span style="font-size:18px; color:#888">%</span></div>
+        <div class="kpi-trend quote">"pe pre-prod lucrează?"</div>
+        <div class="mini-bar"><span data-w="100"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene" id="s4">
+    <div class="topbar">
+      <span class="brand"><span class="logo">O</span> MY ORANGE · user feedback</span>
+      <span class="chip accent"><span class="dot"></span>App Store · trending</span>
+    </div>
+    <div class="store-head">
+      <div class="stars">★★★★★</div>
+      <div class="rating">5.0</div>
+      <div class="count">based on 1,247 reviews · "tare maladeața!"</div>
+    </div>
+    <div class="reviews" id="reviews"></div>
+  </div>
+
+  <div class="scene" id="s5">
+    <canvas class="confetti" id="conf"></canvas>
+    <div class="topbar" style="position:relative; z-index:5">
+      <span class="brand"><span class="logo">O</span> MY ORANGE · celebration mode</span>
+      <span class="chip accent"><span class="dot"></span>v Alina.0 deployed</span>
+    </div>
+    <div class="final">
+      <div class="release-tag"><span class="live-dot"></span>LIVE IN PRODUCTION · just now</div>
+      <div class="emoji-row">🚀 ❤️ 🎂</div>
+      <h1>La mulți ani, <span class="accent">Alina!</span></h1>
+      <div class="role">Our lovely Product Owner @ My Orange</div>
+      <div class="signed">
+        <div class="from">// from the team</div>
+        Încă o lună 😜
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn" id="replay">↻ replay sprint</button>
+        <button class="btn ghost" id="quotebtn">+ more quotes</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <span class="step" id="stepLabel">1 / 5</span>
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', function() {
+  var scenes = ['s1','s2','s3','s4','s5'].map(function(id){return document.getElementById(id)});
+  var stepLabel = document.getElementById('stepLabel');
+  var timers = [];
+
+  function clearTimers(){
+    for (var i = 0; i < timers.length; i++) {
+      clearTimeout(timers[i]);
+      clearInterval(timers[i]);
+    }
+    timers = [];
+  }
+
+  function show(i){
+    for (var k = 0; k < scenes.length; k++) {
+      scenes[k].classList.toggle('active', k === i);
+    }
+    stepLabel.textContent = (i + 1) + ' / 5';
+  }
+
+  function runKanban(){
+    timers.push(setTimeout(function(){
+      var backCol = document.getElementById('col-back');
+      var progCol = document.getElementById('col-prog');
+      var doneCol = document.getElementById('col-done');
+      var cBack = document.getElementById('c-back');
+      var cProg = document.getElementById('c-prog');
+      var cDone = document.getElementById('c-done');
+
+      timers.push(setTimeout(function(){
+        var t = backCol.firstElementChild;
+        if(t){
+          t.style.transition = 'all .6s';
+          t.style.opacity='0';
+          t.style.transform='translateX(80px)';
+          setTimeout(function(){
+            t.style.transform='';
+            t.style.opacity='';
+            t.classList.add('assigned-alina');
+            var b = t.querySelector('.badge');
+            if(b) b.textContent = '@ Alina';
+            progCol.appendChild(t);
+            cBack.textContent = backCol.children.length;
+            cProg.textContent = progCol.children.length;
+          }, 600);
+        }
+      }, 1200));
+
+      timers.push(setTimeout(function(){
+        var t = progCol.firstElementChild;
+        if(t){
+          t.style.transition = 'all .6s';
+          t.style.opacity='0';
+          t.style.transform='translateX(80px)';
+          setTimeout(function(){
+            t.style.transform='';
+            t.style.opacity='';
+            t.classList.add('done');
+            doneCol.insertBefore(t, doneCol.firstChild);
+            cProg.textContent = progCol.children.length;
+            cDone.textContent = parseInt(cDone.textContent) + 1;
+          }, 600);
+        }
+      }, 3200));
+    }, 1500));
+  }
+
+  function runKPI(){
+    var els = document.querySelectorAll('#s3 .kpi-val[data-target]');
+    els.forEach(function(el){
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var suffix = el.querySelector('span') ? el.querySelector('span').outerHTML : '';
+      var start = performance.now();
+      var dur = 1800;
+      function step(t){
+        var k = Math.min(1, (t - start) / dur);
+        var eased = 1 - Math.pow(1 - k, 3);
+        var cur = Math.round(target * eased);
+        el.innerHTML = cur + suffix;
+        if (k < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+    document.querySelectorAll('#s3 .mini-bar > span').forEach(function(el){
+      var w = el.getAttribute('data-w');
+      setTimeout(function(){ el.style.width = w + '%'; }, 200);
+    });
+  }
+
+  var reviews = [
+    {who:'Echipa Dev', stars:'★★★★★', lang:'🇷🇴', text:'"Always knows what users want. Aaa okok, deci... best PO!"'},
+    {who:'QA Team', stars:'★★★★★', lang:'🇬🇧', text:'"She turned chaos into a clean roadmap. Sunteți foarte bravo!"'},
+    {who:'Design Squad', stars:'★★★★★', lang:'🇪🇸', text:'"¡La mejor PO! Always says \'Aaaa ce clasnaaa!\' to our mockups."'},
+    {who:'Backend Crew', stars:'★★★★★', lang:'🇫🇷', text:'"Pe pre-prod lucrează? Yes, et c\'est magnifique. Très professionnelle."'},
+    {who:'CEO', stars:'★★★★★', lang:'🇷🇴', text:'"Super product owner. Pune ordine în dulăpior și în roadmap deopotrivă."'}
+  ];
+  function runReviews(){
+    var box = document.getElementById('reviews');
+    box.innerHTML = '';
+    reviews.forEach(function(r, i){
+      timers.push(setTimeout(function(){
+        var d = document.createElement('div');
+        d.className = 'review';
+        d.innerHTML = '<div class="top"><div><span class="author">' + r.who + '</span><span class="lang-flag">' + r.lang + '</span></div><span class="stars">' + r.stars + '</span></div><div class="text">' + r.text + '</div>';
+        box.appendChild(d);
+      }, i * 600));
+    });
+  }
+
+  var quotes = [
+    {who:'Alina · standup', text:'Deci, hai să clarificăm un pic cerința...'},
+    {who:'Alina · refinement', text:'Pe pre-prod lucrează? 🤔'},
+    {who:'Alina · review', text:'Aaaa ce clasnaaa! 🤩'},
+    {who:'Alina · release', text:'Neatsa 🚀 Aplicația e publicată în store ❤️'},
+    {who:'Alina · 1:1', text:'Sunteți foarte bravo! 💪'},
+    {who:'Alina · planning', text:'Punem și asta în dulăpior pentru sprint-ul viitor 📦'},
+    {who:'Alina · slack', text:'aaa okok 👌'},
+    {who:'Alina · grooming', text:'Asta acum? 👀'},
+    {who:'Alina · pause', text:'vreți un prikol?))'},
+    {who:'Alina · demo', text:'tare maladeața 🔥'},
+    {who:'Alina · ship-it', text:'Uraaa ❤️'},
+    {who:'Alina · bug-triage', text:'Blin... 😅'},
+    {who:'Alina · always', text:'Acus verific ✅'},
+    {who:'Alina · retro', text:'Super, mergem mai departe 🚀'}
+  ];
+  function spawnQuotes(){
+    var container = document.getElementById('s5');
+    var i = 0;
+    var iv = setInterval(function(){
+      if (i >= quotes.length) { clearInterval(iv); return; }
+      var q = quotes[i++];
+      var b = document.createElement('div');
+      b.className = 'quote-bubble';
+      b.style.top = (12 + Math.random() * 60) + '%';
+      b.style.left = (Math.random() < 0.5 ? 3 : 60) + '%';
+      b.innerHTML = '<span class="who">' + q.who + '</span>' + q.text;
+      container.appendChild(b);
+      setTimeout(function(){ if (b.parentNode) b.remove(); }, 5500);
+    }, 700);
+    timers.push(iv);
+  }
+
+  var confettiStarted = false;
+  function fireConfetti(){
+    if (confettiStarted) return;
+    confettiStarted = true;
+    var canvas = document.getElementById('conf');
+    var ctx = canvas.getContext('2d');
+    var rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    var colors = ['#ff8a3d','#ff5a1f','#ffb98a','#ffd6bd','#22c55e','#0ea5e9','#f59e0b'];
+    var parts = [];
+    for (var i = 0; i < 140; i++) {
+      parts.push({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * canvas.height,
+        w: 5 + Math.random() * 7,
+        h: 7 + Math.random() * 9,
+        c: colors[Math.floor(Math.random() * colors.length)],
+        vy: 1.2 + Math.random() * 2,
+        vx: -1 + Math.random() * 2,
+        r: Math.random() * Math.PI,
+        vr: -0.1 + Math.random() * 0.2
+      });
+    }
+    function tick(){
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.r += p.vr;
+        if (p.y > canvas.height + 20) {
+          p.y = -20;
+          p.x = Math.random() * canvas.width;
+        }
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+      requestAnimationFrame(tick);
+    }
+    tick();
+  }
+
+  function runSequence(){
+    clearTimers();
+    confettiStarted = false;
+    show(0);
+    runKanban();
+    timers.push(setTimeout(function(){ show(1); }, 7500));
+    timers.push(setTimeout(function(){ show(2); runKPI(); }, 14000));
+    timers.push(setTimeout(function(){ show(3); runReviews(); }, 20500));
+    timers.push(setTimeout(function(){ show(4); fireConfetti(); spawnQuotes(); }, 27500));
+  }
+
+  document.getElementById('replay').addEventListener('click', runSequence);
+  document.getElementById('quotebtn').addEventListener('click', spawnQuotes);
+
+  runSequence();
+});
+</script>
+
+</body>
+</html>
