@@ -2,7 +2,8 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#fafafa">
 <title>La mulți ani, Alina! 🧡</title>
 <meta property="og:title" content="La mulți ani, Alina!">
 <meta property="og:description" content="v Alina.0 — Now Live in Production ❤️">
@@ -10,26 +11,20 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     width: 100%;
-    min-height: 100vh;
-    background: #f4f4f7;
+    height: 100%;
+    background: #fafafa;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     color: #1a1a1f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    overflow: hidden;
   }
 
   #app {
-    width: 100%;
-    max-width: 900px;
-    aspect-ratio: 16/10;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     background: #fafafa;
-    border-radius: 12px;
-    overflow: hidden;
     position: relative;
-    border: 1px solid #e8e8ec;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
   }
 
   .scene {
@@ -37,7 +32,7 @@
     inset: 0;
     opacity: 0;
     transition: opacity 0.8s ease;
-    padding: 24px;
+    padding: 32px 48px;
     display: flex;
     flex-direction: column;
     background: #fafafa;
@@ -49,11 +44,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 12px;
+    padding-bottom: 14px;
     border-bottom: 1px solid #ececf0;
-    margin-bottom: 16px;
-    font-size: 11px;
+    margin-bottom: 24px;
+    font-size: 12px;
     color: #888;
+    flex-shrink: 0;
+    gap: 12px;
   }
   .brand {
     font-weight: 600;
@@ -61,30 +58,38 @@
     color: #1a1a1f;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .logo {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     background: linear-gradient(135deg, #ff8a3d, #ff5a1f);
-    border-radius: 5px;
+    border-radius: 6px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 14px;
     color: #fff;
+    flex-shrink: 0;
   }
   .chip {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border: 1px solid #e8e8ec;
     background: #fff;
     color: #555;
     border-radius: 999px;
-    font-size: 11px;
+    font-size: 12px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .chip.accent {
     border-color: #ffd6bd;
@@ -102,21 +107,19 @@
   }
   @keyframes pulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-  .mono { font-family: ui-monospace, "SF Mono", Monaco, Consolas, monospace; }
-
   /* SCENE 1: Kanban */
   .kanban {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
+    gap: 16px;
     flex: 1;
-    overflow: hidden;
+    min-height: 0;
   }
   .col {
     background: #fff;
     border: 1px solid #ececf0;
-    border-radius: 10px;
-    padding: 10px;
+    border-radius: 12px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     min-height: 0;
@@ -126,33 +129,39 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 11px;
-    color: #666;
-    margin-bottom: 8px;
-    padding-bottom: 8px;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
     border-bottom: 1px dashed #ececf0;
-    font-weight: 500;
+    font-weight: 600;
   }
   .col-head .count {
     background: #f4f4f7;
-    padding: 1px 7px;
+    padding: 2px 9px;
     border-radius: 10px;
     font-family: monospace;
     color: #666;
     font-weight: 400;
+    font-size: 12px;
+  }
+  .col-body {
+    flex: 1;
+    overflow: hidden;
   }
   .ticket {
     background: #fff;
     border: 1px solid #ececf0;
     border-left: 3px solid #999;
-    border-radius: 6px;
-    padding: 7px 9px;
-    margin-bottom: 6px;
-    font-size: 11px;
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin-bottom: 8px;
+    font-size: 13px;
     opacity: 0;
     transform: translateY(-6px);
     animation: tin 0.35s forwards;
     color: #333;
+    line-height: 1.4;
   }
   .ticket.p0 { border-left-color: #ef4444; }
   .ticket.p1 { border-left-color: #f59e0b; }
@@ -167,15 +176,15 @@
   .ticket .id {
     font-family: monospace;
     color: #999;
-    font-size: 9px;
-    margin-right: 5px;
+    font-size: 10px;
+    margin-right: 6px;
   }
   .ticket .badge {
     display: inline-block;
-    padding: 1px 6px;
-    border-radius: 3px;
-    font-size: 9px;
-    margin-top: 4px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    margin-top: 5px;
     background: #f4f4f7;
     color: #777;
   }
@@ -192,24 +201,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 32px;
+    gap: 60px;
+    min-height: 0;
   }
   .phone {
-    width: 180px;
+    width: 220px;
     aspect-ratio: 9/19;
     background: #1a1a1f;
-    border-radius: 24px;
-    padding: 8px;
-    box-shadow: 0 0 0 2px #2a2a30, 0 20px 50px rgba(0,0,0,0.15);
+    border-radius: 30px;
+    padding: 10px;
+    box-shadow: 0 0 0 2px #2a2a30, 0 30px 70px rgba(0,0,0,0.18);
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
   }
   .phone-screen {
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg, #ff8a3d, #ff5a1f);
-    border-radius: 18px;
-    padding: 20px 14px;
+    border-radius: 22px;
+    padding: 24px 16px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -217,17 +228,17 @@
   }
   .phone-notch {
     position: absolute;
-    top: 8px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 50px;
-    height: 14px;
+    width: 60px;
+    height: 16px;
     background: #1a1a1f;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 12px 12px;
     z-index: 5;
   }
   .phone-time {
-    font-size: 10px;
+    font-size: 11px;
     color: #fff;
     text-align: left;
     font-weight: 600;
@@ -242,51 +253,50 @@
     text-align: center;
   }
   .phone-logo .icon {
-    width: 60px;
-    height: 60px;
+    width: 72px;
+    height: 72px;
     background: #fff;
-    border-radius: 14px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+    font-size: 34px;
     font-weight: 700;
     color: #ff5a1f;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   }
-  .phone-logo .name { font-size: 14px; font-weight: 600; color: #fff; }
+  .phone-logo .name { font-size: 16px; font-weight: 600; color: #fff; }
   .phone-logo .ver {
-    font-size: 10px;
+    font-size: 11px;
     color: #fff;
     opacity: 0.85;
-    margin-top: 3px;
+    margin-top: 4px;
     font-family: monospace;
   }
   .release-info {
-    flex: 1;
-    min-width: 200px;
-    max-width: 260px;
+    flex: 0 1 320px;
+    min-width: 0;
   }
   .release-info h3 {
-    font-size: 14px;
-    margin: 0 0 4px;
+    font-size: 18px;
+    margin: 0 0 6px;
     color: #1a1a1f;
     font-weight: 600;
   }
   .release-info .sub {
-    font-size: 11px;
+    font-size: 13px;
     color: #888;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     font-family: monospace;
   }
   .changelog {
     background: #fff;
     border: 1px solid #ececf0;
-    border-radius: 8px;
-    padding: 11px;
-    font-size: 11px;
-    line-height: 1.8;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 13px;
+    line-height: 1.9;
     font-family: monospace;
   }
   .changelog .added { color: #15803d; }
@@ -295,14 +305,14 @@
 
   .push {
     position: absolute;
-    top: 30px;
-    left: 8px;
-    right: 8px;
+    top: 36px;
+    left: 10px;
+    right: 10px;
     background: rgba(255,255,255,0.97);
     color: #1a1a1f;
-    padding: 8px 10px;
-    border-radius: 10px;
-    font-size: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 11px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.18);
     z-index: 10;
     opacity: 0;
@@ -314,16 +324,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
   .push .app {
     font-weight: 600;
     color: #ff5a1f;
-    font-size: 9px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
   }
-  .push .time { font-size: 9px; color: #999; }
+  .push .time { font-size: 10px; color: #999; }
   .push .body { color: #1a1a1f; line-height: 1.4; }
 
   /* SCENE 3: KPI */
@@ -331,19 +341,21 @@
     flex: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 16px;
+    min-height: 0;
   }
   .kpi-card {
     background: #fff;
     border: 1px solid #ececf0;
-    border-radius: 12px;
-    padding: 14px;
+    border-radius: 14px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
     box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    min-height: 120px;
   }
   .kpi-card::before {
     content: '';
@@ -351,25 +363,25 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 3px;
     background: linear-gradient(90deg, #ff8a3d, #ff5a1f);
   }
   .kpi-label {
-    font-size: 10px;
+    font-size: 12px;
     color: #888;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 500;
   }
   .kpi-val {
-    font-size: 28px;
+    font-size: 42px;
     font-weight: 700;
     color: #1a1a1f;
     font-family: monospace;
-    margin: 6px 0;
+    margin: 10px 0;
   }
   .kpi-trend {
-    font-size: 11px;
+    font-size: 13px;
     color: #15803d;
     display: flex;
     align-items: center;
@@ -380,11 +392,11 @@
     font-style: italic;
   }
   .mini-bar {
-    height: 4px;
+    height: 5px;
     background: #f4f4f7;
-    border-radius: 2px;
+    border-radius: 3px;
     overflow: hidden;
-    margin-top: 6px;
+    margin-top: 10px;
   }
   .mini-bar > span {
     display: block;
@@ -395,36 +407,42 @@
   }
 
   /* SCENE 4: Reviews */
-  .store-head { text-align: center; margin-bottom: 14px; }
+  .store-head {
+    text-align: center;
+    margin-bottom: 24px;
+  }
   .store-head .stars {
-    font-size: 24px;
-    letter-spacing: 3px;
+    font-size: 32px;
+    letter-spacing: 4px;
     color: #f59e0b;
     line-height: 1;
   }
   .store-head .rating {
-    font-size: 32px;
+    font-size: 44px;
     font-weight: 700;
-    margin-top: 4px;
+    margin-top: 8px;
     color: #1a1a1f;
   }
   .store-head .count {
-    font-size: 11px;
+    font-size: 13px;
     color: #888;
   }
   .reviews {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     overflow: hidden;
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
   }
   .review {
     background: #fff;
     border: 1px solid #ececf0;
-    border-radius: 8px;
-    padding: 9px 11px;
-    font-size: 11px;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
     opacity: 0;
     transform: translateY(8px);
     animation: rin 0.6s forwards;
@@ -435,11 +453,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
-  .review .author { font-weight: 600; color: #1a1a1f; font-size: 11px; }
-  .review .stars { color: #f59e0b; font-size: 10px; letter-spacing: 1px; }
-  .review .lang-flag { font-size: 10px; margin-left: 5px; }
+  .review .author { font-weight: 600; color: #1a1a1f; font-size: 13px; }
+  .review .stars { color: #f59e0b; font-size: 12px; letter-spacing: 1px; }
+  .review .lang-flag { font-size: 12px; margin-left: 6px; }
   .review .text { color: #555; line-height: 1.5; font-style: italic; }
 
   /* SCENE 5: Final */
@@ -452,40 +470,41 @@
     text-align: center;
     position: relative;
     z-index: 5;
+    padding: 16px;
   }
   .release-tag {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background: #fff;
     border: 1px solid #ffd6bd;
-    padding: 6px 14px;
+    padding: 8px 18px;
     border-radius: 999px;
-    font-size: 11px;
+    font-size: 13px;
     font-family: monospace;
     color: #d94a0e;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(255,90,31,0.1);
+    margin-bottom: 18px;
+    box-shadow: 0 2px 12px rgba(255,90,31,0.12);
   }
   .release-tag .live-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     background: #22c55e;
     border-radius: 50%;
     animation: pulse 1s infinite;
   }
   .final .emoji-row {
-    font-size: 48px;
-    margin: 8px 0;
-    letter-spacing: 6px;
+    font-size: 64px;
+    margin: 12px 0;
+    letter-spacing: 8px;
   }
   .final h1 {
-    font-size: 40px;
+    font-size: 64px;
     margin: 0;
     font-weight: 700;
     color: #1a1a1f;
     line-height: 1.1;
-    letter-spacing: -0.5px;
+    letter-spacing: -1px;
   }
   .final h1 .accent {
     background: linear-gradient(90deg, #ff8a3d, #ff5a1f);
@@ -494,28 +513,28 @@
     color: transparent;
   }
   .final .role {
-    font-size: 13px;
+    font-size: 16px;
     color: #888;
-    margin-top: 8px;
+    margin-top: 12px;
     font-style: italic;
   }
   .final .signed {
-    margin-top: 16px;
-    padding: 12px 22px;
+    margin-top: 24px;
+    padding: 16px 30px;
     background: #fff;
     border: 1px solid #ececf0;
-    border-radius: 12px;
-    font-size: 14px;
+    border-radius: 14px;
+    font-size: 18px;
     color: #d94a0e;
     font-weight: 600;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
   }
   .final .signed .from {
-    font-size: 10px;
+    font-size: 11px;
     color: #999;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-weight: 500;
   }
 
@@ -530,8 +549,8 @@
 
   .controls {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 16px;
+    right: 16px;
     z-index: 10;
     display: flex;
     gap: 6px;
@@ -539,11 +558,11 @@
   }
   .step {
     color: #888;
-    font-size: 10px;
+    font-size: 11px;
     font-family: monospace;
     background: #fff;
-    padding: 4px 8px;
-    border-radius: 5px;
+    padding: 5px 10px;
+    border-radius: 6px;
     border: 1px solid #ececf0;
   }
 
@@ -552,10 +571,10 @@
     background: #fff;
     border: 1px solid #ececf0;
     border-left: 3px solid #ff5a1f;
-    padding: 9px 13px;
-    border-radius: 10px;
-    font-size: 11px;
-    max-width: 210px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 12px;
+    max-width: 240px;
     opacity: 0;
     transform: translateY(8px);
     z-index: 8;
@@ -569,10 +588,10 @@
   .quote-bubble .who {
     display: block;
     color: #d94a0e;
-    font-size: 9px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     font-weight: 600;
   }
 
@@ -580,14 +599,14 @@
     background: linear-gradient(180deg, #ff8a3d, #ff5a1f);
     color: #fff;
     border: 0;
-    padding: 9px 16px;
-    border-radius: 8px;
+    padding: 11px 20px;
+    border-radius: 10px;
     font-weight: 500;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 14px;
     font-family: inherit;
-    margin: 0 3px;
-    box-shadow: 0 2px 6px rgba(255,90,31,0.25);
+    margin: 4px;
+    box-shadow: 0 2px 8px rgba(255,90,31,0.25);
     transition: all 0.15s;
   }
   .btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
@@ -598,14 +617,81 @@
     box-shadow: none;
   }
 
-  @media (max-width: 600px) {
-    #app { aspect-ratio: 9/14; }
-    .final h1 { font-size: 26px; }
-    .okr-grid { grid-template-columns: 1fr; }
-    .phone-wrap { flex-direction: column; gap: 16px; }
-    .phone { width: 130px; }
-    .release-info { max-width: 100%; }
-    .scene { padding: 16px; }
+  /* === MOBILE === */
+  @media (max-width: 720px) {
+    #app { overflow-y: auto; }
+    .scene { padding: 16px 14px; overflow-y: auto; }
+    .topbar {
+      font-size: 11px;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      gap: 8px;
+    }
+    .brand { font-size: 11px; }
+    .logo { width: 20px; height: 20px; font-size: 12px; }
+    .chip { font-size: 10px; padding: 4px 9px; }
+
+    /* Kanban: 3 cols stacked vertical */
+    .kanban {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      flex: none;
+      min-height: auto;
+    }
+    .col { padding: 12px; }
+    .col-body { max-height: none; }
+    .col-head { font-size: 12px; margin-bottom: 10px; }
+    .ticket { font-size: 13px; padding: 9px 11px; }
+
+    /* Phone scene: stack vertical */
+    .phone-wrap {
+      flex-direction: column;
+      gap: 20px;
+      padding: 10px 0;
+    }
+    .phone { width: 160px; padding: 8px; border-radius: 26px; }
+    .phone-screen { padding: 20px 12px; border-radius: 18px; }
+    .phone-logo .icon { width: 56px; height: 56px; font-size: 26px; }
+    .phone-logo .name { font-size: 14px; }
+    .release-info { max-width: 100%; width: 100%; flex: none; }
+    .release-info h3 { font-size: 16px; }
+    .changelog { font-size: 12px; padding: 12px; }
+
+    /* KPI: stack vertical */
+    .okr-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      flex: none;
+    }
+    .kpi-card { padding: 16px; min-height: 90px; }
+    .kpi-val { font-size: 32px; }
+    .kpi-label { font-size: 11px; }
+    .kpi-trend { font-size: 12px; }
+
+    /* Reviews */
+    .review { font-size: 12px; padding: 10px 12px; }
+    .review .author { font-size: 12px; }
+    .store-head .rating { font-size: 36px; }
+    .store-head .stars { font-size: 26px; }
+    .store-head .count { font-size: 12px; }
+
+    /* Final */
+    .final h1 { font-size: 36px; }
+    .final .emoji-row { font-size: 44px; letter-spacing: 5px; }
+    .final .role { font-size: 13px; }
+    .final .signed { font-size: 15px; padding: 14px 22px; }
+    .release-tag { font-size: 11px; padding: 6px 14px; }
+    .quote-bubble { max-width: 180px; font-size: 11px; padding: 8px 11px; }
+    .btn { font-size: 12px; padding: 10px 16px; }
+
+    /* Controls */
+    .controls { bottom: 10px; right: 10px; }
+    .step { font-size: 10px; padding: 4px 8px; }
+  }
+
+  /* Very tall mobile - small adjustments */
+  @media (max-width: 720px) and (min-height: 700px) {
+    .scene { justify-content: flex-start; }
   }
 </style>
 </head>
@@ -615,12 +701,12 @@
   <div class="scene active" id="s1">
     <div class="topbar">
       <span class="brand"><span class="logo">O</span> MY ORANGE · sprint board</span>
-      <span class="chip"><span class="dot"></span>sprint #∞ · grooming</span>
+      <span class="chip"><span class="dot"></span>sprint #∞</span>
     </div>
     <div class="kanban">
       <div class="col">
         <div class="col-head"><span>📥 Backlog</span><span class="count" id="c-back">5</span></div>
-        <div id="col-back">
+        <div class="col-body" id="col-back">
           <div class="ticket p2"><span class="id">MYO-1247</span>Add dark mode toggle<div class="badge">Frontend</div></div>
           <div class="ticket p1"><span class="id">MYO-1248</span>Refactor onboarding flow<div class="badge">UX</div></div>
           <div class="ticket p2"><span class="id">MYO-1249</span>API rate limit improvements<div class="badge">Backend</div></div>
@@ -630,14 +716,14 @@
       </div>
       <div class="col">
         <div class="col-head"><span>🔄 In Progress</span><span class="count" id="c-prog">2</span></div>
-        <div id="col-prog">
+        <div class="col-body" id="col-prog">
           <div class="ticket p1 assigned-alina" style="animation-delay:.4s"><span class="id">MYO-1252</span>Q4 roadmap review<div class="badge">@ Alina</div></div>
           <div class="ticket p0 assigned-alina" style="animation-delay:.9s"><span class="id">MYO-9999</span>🎂 Birthday Celebration · P0 Critical<div class="badge">@ Alina</div></div>
         </div>
       </div>
       <div class="col">
         <div class="col-head"><span>✅ Done</span><span class="count" id="c-done">847</span></div>
-        <div id="col-done">
+        <div class="col-body" id="col-done">
           <div class="ticket done" style="animation-delay:.1s"><span class="id">MYO-1245</span>Payment flow polish</div>
           <div class="ticket done" style="animation-delay:.2s"><span class="id">MYO-1244</span>Account settings redesign</div>
           <div class="ticket done" style="animation-delay:.3s"><span class="id">MYO-1243</span>Bug: edge case on logout</div>
@@ -650,7 +736,7 @@
   <div class="scene" id="s2">
     <div class="topbar">
       <span class="brand"><span class="logo">O</span> MY ORANGE · release</span>
-      <span class="chip accent"><span class="dot"></span>shipping to store</span>
+      <span class="chip accent"><span class="dot"></span>shipping</span>
     </div>
     <div class="phone-wrap">
       <div class="phone">
@@ -689,7 +775,7 @@
   <div class="scene" id="s3">
     <div class="topbar">
       <span class="brand"><span class="logo">O</span> MY ORANGE · Q4 metrics</span>
-      <span class="chip"><span class="dot"></span>all KRs on track</span>
+      <span class="chip"><span class="dot"></span>on track</span>
     </div>
     <div class="okr-grid">
       <div class="kpi-card">
@@ -706,13 +792,13 @@
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Stakeholders calmați</div>
-        <div class="kpi-val" style="font-size:38px">∞</div>
+        <div class="kpi-val" style="font-size:54px">∞</div>
         <div class="kpi-trend quote">"acus verific" — said & done</div>
         <div class="mini-bar"><span data-w="100"></span></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">Edge cases prinse</div>
-        <div class="kpi-val" data-target="100">0<span style="font-size:18px; color:#888">%</span></div>
+        <div class="kpi-val" data-target="100">0<span style="font-size:24px; color:#888">%</span></div>
         <div class="kpi-trend quote">"pe pre-prod lucrează?"</div>
         <div class="mini-bar"><span data-w="100"></span></div>
       </div>
@@ -721,8 +807,8 @@
 
   <div class="scene" id="s4">
     <div class="topbar">
-      <span class="brand"><span class="logo">O</span> MY ORANGE · user feedback</span>
-      <span class="chip accent"><span class="dot"></span>App Store · trending</span>
+      <span class="brand"><span class="logo">O</span> MY ORANGE · feedback</span>
+      <span class="chip accent"><span class="dot"></span>App Store</span>
     </div>
     <div class="store-head">
       <div class="stars">★★★★★</div>
@@ -735,8 +821,8 @@
   <div class="scene" id="s5">
     <canvas class="confetti" id="conf"></canvas>
     <div class="topbar" style="position:relative; z-index:5">
-      <span class="brand"><span class="logo">O</span> MY ORANGE · celebration mode</span>
-      <span class="chip accent"><span class="dot"></span>v Alina.0 deployed</span>
+      <span class="brand"><span class="logo">O</span> MY ORANGE · celebration</span>
+      <span class="chip accent"><span class="dot"></span>v Alina.0</span>
     </div>
     <div class="final">
       <div class="release-tag"><span class="live-dot"></span>LIVE IN PRODUCTION · just now</div>
@@ -747,7 +833,7 @@
         <div class="from">// from the team</div>
         Încă o lună 😜
       </div>
-      <div style="margin-top:16px">
+      <div style="margin-top:20px">
         <button class="btn" id="replay">↻ replay sprint</button>
         <button class="btn ghost" id="quotebtn">+ more quotes</button>
       </div>
@@ -778,6 +864,9 @@ window.addEventListener('load', function() {
       scenes[k].classList.toggle('active', k === i);
     }
     stepLabel.textContent = (i + 1) + ' / 5';
+    // Scroll to top on scene change for mobile
+    var active = scenes[i];
+    if (active) active.scrollTop = 0;
   }
 
   function runKanban(){
@@ -794,7 +883,7 @@ window.addEventListener('load', function() {
         if(t){
           t.style.transition = 'all .6s';
           t.style.opacity='0';
-          t.style.transform='translateX(80px)';
+          t.style.transform='translateX(40px)';
           setTimeout(function(){
             t.style.transform='';
             t.style.opacity='';
@@ -813,7 +902,7 @@ window.addEventListener('load', function() {
         if(t){
           t.style.transition = 'all .6s';
           t.style.opacity='0';
-          t.style.transform='translateX(80px)';
+          t.style.transform='translateX(40px)';
           setTimeout(function(){
             t.style.transform='';
             t.style.opacity='';
@@ -894,7 +983,7 @@ window.addEventListener('load', function() {
       var b = document.createElement('div');
       b.className = 'quote-bubble';
       b.style.top = (12 + Math.random() * 60) + '%';
-      b.style.left = (Math.random() < 0.5 ? 3 : 60) + '%';
+      b.style.left = (Math.random() < 0.5 ? 4 : 60) + '%';
       b.innerHTML = '<span class="who">' + q.who + '</span>' + q.text;
       container.appendChild(b);
       setTimeout(function(){ if (b.parentNode) b.remove(); }, 5500);
@@ -913,7 +1002,7 @@ window.addEventListener('load', function() {
     canvas.height = rect.height;
     var colors = ['#ff8a3d','#ff5a1f','#ffb98a','#ffd6bd','#22c55e','#0ea5e9','#f59e0b'];
     var parts = [];
-    for (var i = 0; i < 140; i++) {
+    for (var i = 0; i < 160; i++) {
       parts.push({
         x: Math.random() * canvas.width,
         y: -20 - Math.random() * canvas.height,
@@ -962,6 +1051,16 @@ window.addEventListener('load', function() {
 
   document.getElementById('replay').addEventListener('click', runSequence);
   document.getElementById('quotebtn').addEventListener('click', spawnQuotes);
+
+  // Recompute confetti canvas on resize
+  window.addEventListener('resize', function() {
+    var canvas = document.getElementById('conf');
+    if (canvas) {
+      var rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+  });
 
   runSequence();
 });
